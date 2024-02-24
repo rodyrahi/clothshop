@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/header.ejs') %>
+
+
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-4 text-center ">
+        <h2>Create Cutomer</h2>
+
+        <form action="/createuser" method="post">
+        <div class="mb-1">
+          <input class="form-control mb-1" type="text" name="name" placeholder="name" required>
+          <input class="form-control mb-1" type="text" name="phone" placeholder="number">
+          
+        
+
+          <div id="itemlist" class="">
+
+
+
+          </div>
+
+        </div>
+
+        <div class="p-1" id="items">
+
+               <input class="form-control me-2"  type="text" id="filteritems" placeholder="search..." >
+            <div class="mb-2">
+                <% items.forEach(element => { %>
+                <p onclick="add(this)" data-price="<%= element.price %>"> <%= element.name %></p>
+
+                <% }) %>
+              </div>
+      
+        </div>
+
+        <div class="mb-3">
+          <label class="mb-1" for="Date">Date Of Delivery</label>
+          <input id="Date" name="dob" class="form-control" type="date" />
+        </div>
+
+
+      
+        <div class="mb-2 text-end">
+          <button type="submit" class="btn  btn-success ">Create</button>
+        </div>
+
+      </form>
+      </div>
+
+      <div class="col-4 text-center">
+        <h2>Create Items</h2>
+
+          <form method="post" action="/createitem" >
+            <input class="form-control mb-2" type="text" placeholder="itemname" >
+            <input class="form-control mb-2" type="number" placeholder="itemprice" >  
+            <button class="btn btn-dark btn-sm" type="submit">Create Item</button>
+          </form>
+  
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+  <script>
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+      var searchInput = document.getElementById("searchInput");
+      if (searchInput) {
+        searchInput.focus();
+      }
+    });
+
+
+  </script>
+
+
+  <script>
+    function deleteInput(button) {
+      // Get the parent div of the input and remove it from the DOM
+      var parentDiv = button.parentElement;
+      parentDiv.remove();
+    }
+
+    function add(el) {
+
+        const list = document.getElementById('itemlist')
+        list.innerHTML += 
+        `
+        <div class="mb-1 d-flex">
+                <input type="text" class="form-control me-1"  name="items" value="${ el.innerHTML.trim()}" >
+                <input type="number" class="form-control me-1"  name="price" value="${el.getAttribute('data-price')}" >
+                <i class="fa-solid fa-circle-xmark text-danger m-auto" onclick="deleteInput(this)" style="font-size: 1.5rem;"></i>
+            </div>
+        `
+
+       
+        
+    }
+
+
+
+
+
+
+    document.getElementById('filteritems').addEventListener('input', function() {
+      var filterValue = this.value.toLowerCase(); // Get the value entered by the user and convert it to lowercase for case-insensitive filtering
+      var itemList = document.getElementById('items');
+      var items = itemList.getElementsByTagName('p');
+  
+      Array.from(items).forEach(function(item) {
+        var text = item.textContent.toLowerCase();
+        if (text.indexOf(filterValue) > -1) {
+          item.style.display = 'block'; // Show the item if the text matches the filter
+        } else {
+          item.style.display = 'none'; // Hide the item if the text does not match the filter
+        }
+      });
+
+      
+    });
+  </script>
+
+
+
+
+
+</body>
+
+</html>
