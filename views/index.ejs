@@ -28,10 +28,15 @@
 
         <div class="p-1" id="items">
 
-               <input class="form-control me-2"  type="text" id="filteritems" placeholder="search..." >
-            <div class="mb-2">
+               <input class="form-control form-control-sm me-2"  type="text" id="filteritems" placeholder="search..." >
+            <div class="mb-2 ">
                 <% items.forEach(element => { %>
-                <p onclick="add(this)" data-price="<%= element.price %>"> <%= element.name %></p>
+                  <div class=" border p-1 m-1 rounded-2" style="display: flex;">
+                    <h5 type="button" onclick="add(this)" data-price="<%= element.price %>"> <%= element.name %></h5>
+
+                    <h6 class="ms-auto my-auto" > ₹<%= element.price %></h6>
+
+                  </div>
 
                 <% }) %>
               </div>
@@ -56,8 +61,8 @@
         <h2>Create Items</h2>
 
           <form method="post" action="/createitem" >
-            <input class="form-control mb-2" type="text" name="name" placeholder="itemname" >
-            <input class="form-control mb-2" type="number" name="price" placeholder="itemprice" >  
+            <input class="form-control mb-2" type="text" name="name" placeholder="itemname"  required>
+            <input class="form-control mb-2" type="number" name="price" placeholder="itemprice" required >  
             <button class="btn btn-dark btn-sm" type="submit">Create Item</button>
           </form>
   
@@ -112,14 +117,16 @@
     document.getElementById('filteritems').addEventListener('input', function() {
       var filterValue = this.value.toLowerCase(); // Get the value entered by the user and convert it to lowercase for case-insensitive filtering
       var itemList = document.getElementById('items');
-      var items = itemList.getElementsByTagName('p');
-  
+      var items = itemList.getElementsByTagName('h5');
+      
+      
       Array.from(items).forEach(function(item) {
         var text = item.textContent.toLowerCase();
+        
         if (text.indexOf(filterValue) > -1) {
-          item.style.display = 'block'; // Show the item if the text matches the filter
+          item.parentElement.style.display = 'flex'; // Show the item if the text matches the filter
         } else {
-          item.style.display = 'none'; // Hide the item if the text does not match the filter
+          item.parentElement.style.display = 'none'; // Hide the item if the text does not match the filter
         }
       });
 
