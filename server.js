@@ -38,7 +38,14 @@ app.post('/createuser', (req, res) => {
   res.redirect('/')
 });
   
+app.post('/createitem', (req, res) => {
+  
+  const { name , price } = req.body
 
+  shopdb.prepare(`INSERT INTO items (name, price) VALUES (?, ?)`).run(name , price);  
+  res.redirect('/')
+});
+  
 
 
 
