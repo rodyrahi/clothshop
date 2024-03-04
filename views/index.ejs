@@ -8,7 +8,7 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-4 text-center ">
+      <div class="col col-md-4 text-center ">
         <h2>Create Cutomer</h2>
 
         <form action="/createuser" method="post">
@@ -32,7 +32,8 @@
             <div class="mb-2 ">
                 <% items.forEach(element => { %>
                   <div class=" border p-1 m-1 rounded-2" style="display: flex;">
-                    <h5 type="button" onclick="add(this)" data-price="<%= element.price %>"> <%= element.name %></h5>
+                    
+                    <h5 type="button" class="w-100" onclick="add(this)" data-price="<%= element.price %>"> <%= element.name %></h5>
 
                     <h6 class="ms-auto my-auto" > ₹<%= element.price %></h6>
 
@@ -57,7 +58,7 @@
       </form>
       </div>
 
-      <div class="col-4 text-center">
+      <div class="col col-md-4 text-center">
         <h2>Create Items</h2>
 
           <form method="post" action="/createitem" >
@@ -100,7 +101,15 @@
         `
         <div class="mb-1 d-flex">
                 <input type="text" class="form-control me-1"  name="items" value="${ el.innerHTML.trim()}" >
+                <select class="form-select me-1 mb-2" name="type" id="">
+                  <option value="rafu">rafu</option>
+                  <option value="press">press</option>
+                </select>
+
+            
+                
                 <input type="number" class="form-control me-1"  name="price" value="${el.getAttribute('data-price')}" >
+                <input type="number" class="form-control me-1" name="count" value="1" min="1" >
                 <i class="fa-solid fa-circle-xmark text-danger m-auto" onclick="deleteInput(this)" style="font-size: 1.5rem;"></i>
             </div>
         `

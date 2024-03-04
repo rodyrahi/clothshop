@@ -25,10 +25,13 @@ app.post('/createuser', (req, res) => {
   const dob = req.body.dob
   
   
-  const { items, price } = req.body;
+  const { items, price , type , count } = req.body;
   const combinedArray = {
     "items":items,
-    "price":price
+    "price":price,
+    "type":type,
+    "count":count
+
   }
   const combinedString = JSON.stringify(combinedArray)
   const totalPrice = price.reduce((accumulator, currentPrice) => accumulator + parseFloat(currentPrice), 0);
