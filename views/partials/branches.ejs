@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+
+
+<%- include('./navbar.ejs') %>
+
+
+  <div class="container mt-3">
+    <h1>Branches</h1>
+
+  
+    <% branches.forEach(branch => { %>
+
+    <div class="card my-3">
+      <div class="card-body">
+        <h5 class="card-title"><%= branch.name %></h5>
+
+        <p class="card-text">
+          <strong>ID:</strong> <%= branch.id %> <br />
+          <strong>Address:</strong> <%= branch.address %>
+        </p>
+
+        <a href="/branch/<%= branch.id %>" class="btn btn-primary">View</a>
+        <a href="/branches/edit/<%= branch.id %>" class="btn btn-secondary"
+          >Edit</a
+        >
+
+        <form
+          action="/branches/delete/<%= branch.id %>"
+          method="POST"
+          class="d-inline"
+        >
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+
+    <% }) %>
+
+  <a href="/createbranches" class="btn btn-primary"
+    ><i class="fa fa-plus"></i> Add Branch</a>
+
+
+  </div>
+
+
+

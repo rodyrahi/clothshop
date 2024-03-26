@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./header.ejs') %>
+
+
+<body>
+    <%- include('./navbar.ejs') %>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1>Create a new branch</h1>
+        <form action="/createbranch" method="post">
+          <div class="mb-1">
+            <input class="form-control mb-1" type="text" name="name" placeholder="name" required>
+            <input class="form-control mb-1" type="text" name="address" placeholder="address" required>
+          </div>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</body>
+
+
+</html>

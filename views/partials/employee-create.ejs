@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./header.ejs') %>
+
+  <body>
+    <%- include('./navbar.ejs') %>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1>Register employee</h1>
+          <form action="/employee/register" method="post">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" name="name" />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" class="form-control" id="phone" name="phone" />
+            </div>
+
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="branch" class="form-label">Branch</label>
+              <select id="branch" name="branch" class="form-control">
+                <% branches.forEach(b => { %>
+                <option value="<%= b.id %>"><%= b.name %></option>
+                <% }) %>
+              </select>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

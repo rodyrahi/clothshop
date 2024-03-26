@@ -1,0 +1,41 @@
+<%- include('../partials/header.ejs') %>
+<%- include('./navbar.ejs') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h1 class="text-center">View Branch</h1>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Branch Details</h2>
+        </div>
+        <div class="card-body">
+          <p><strong>Name:</strong> <%= branch.name %></p>
+          <p><strong>Address:</strong> <%= branch.address %></p>
+
+          <h3>Employees</h3>
+          <ul class="list-group">
+            <% employees.forEach(function(employee) { %>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <%= employee.name %>
+              <a
+                href="/branch/<%= branch.id %>/removeemployee/<%= employee.id %>"
+                class="btn btn-danger btn-sm"
+                >Remove</a
+              >
+            </li>
+
+            <% }); %>
+          </ul>
+          
+     
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

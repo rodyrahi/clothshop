@@ -3,74 +3,113 @@
 
 <%- include('./partials/header.ejs') %>
 
+<style>
+  .itemhover:hover{
+    background-color: aliceblue;
+    color: black;
+  }
+
+</style>
 
 
 <body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col col-md-4 text-center ">
-        <h2>Create Cutomer</h2>
 
-        <form action="/createuser" method="post">
-        <div class="mb-1">
-          <input class="form-control mb-1" type="text" name="name" placeholder="name" required>
-          <input class="form-control mb-1" type="text" name="phone" placeholder="number">
-          
-        
-
-          <div id="itemlist" class="">
+  <%- include('./partials/navbar.ejs') %>
 
 
+    <div class="container-fluid " >
+      <div class="row " style="height: 90vh">
+        <div class="col-3 bg-dark text-light d-flex flex-column p-3">
+          <div class="row">
+            <h4>Items</h4>
 
+            <input
+              class="form-control me-2"
+              type="text"
+              id="filteritems"
+              placeholder="search..."
+            />
+            <hr>
+            <div class="mb-2 p-0 ">
+              <% items.forEach(element => { %>
+              <div class=" p-1 my-1 itemhover " style="display: flex">
+                <h5
+                  type="button"
+                  class="w-100 m-0"
+                  onclick="add(this)"
+                  data-price="<%= element.price %>"
+                >
+                  <%= element.name %>
+                </h5>
+
+                <h6 class="ms-auto my-auto ">₹<%= element.price %></h6>
+              </div>
+              <hr>
+
+              <% }) %>
+              
+            </div>
           </div>
 
+          <div class="row mt-auto">
+            <hr />
+            <h4>Create Items</h4>
+
+            <form class="mb-3" method="post" action="/createitem">
+              <input
+                class="form-control mb-2"
+                type="text"
+                name="name"
+                placeholder="itemname"
+                required
+              />
+              <input
+                class="form-control mb-2"
+                type="number"
+                name="price"
+                placeholder="itemprice"
+                required
+              />
+              <button class="btn btn-primary btn-sm" type="submit">
+                Create Item
+              </button>
+            </form>
+          </div>
         </div>
+        <div class="col-9 text-center d-flex flex-column">
+          <h2>Create Cutomer</h2>
 
-        <div class="p-1" id="items">
+          <form action="/createuser" method="post">
+            <div class="mb-1">
+              <input
+                class="form-control mb-1"
+                type="text"
+                name="name"
+                placeholder="name"
+                required
+              />
+              <input
+                class="form-control mb-1"
+                type="text"
+                name="phone"
+                placeholder="number"
+              />
 
-               <input class="form-control form-control-sm me-2"  type="text" id="filteritems" placeholder="search..." >
-            <div class="mb-2 ">
-                <% items.forEach(element => { %>
-                  <div class=" border p-1 m-1 rounded-2" style="display: flex;">
-                    
-                    <h5 type="button" class="w-100" onclick="add(this)" data-price="<%= element.price %>"> <%= element.name %></h5>
+              <div id="itemlist" class=""></div>
+            </div>
+            <hr>
+            <div class="mb-3 ms-auto" style="max-width: 300px;">
+              <label class="mb-1" for="Date">Date Of Delivery</label>
+              <input id="Date" name="dob" class="form-control" type="date" required />
+            </div>
 
-                    <h6 class="ms-auto my-auto" > ₹<%= element.price %></h6>
-
-                  </div>
-
-                <% }) %>
-              </div>
-      
-        </div>
-
-        <div class="mb-3">
-          <label class="mb-1" for="Date">Date Of Delivery</label>
-          <input id="Date" name="dob" class="form-control" type="date" />
-        </div>
-
-
-      
-        <div class="mb-2 text-end">
-          <button type="submit" class="btn  btn-success ">Create</button>
-        </div>
-
-      </form>
-      </div>
-
-      <div class="col col-md-4 text-center">
-        <h2>Create Items</h2>
-
-          <form method="post" action="/createitem" >
-            <input class="form-control mb-2" type="text" name="name" placeholder="itemname"  required>
-            <input class="form-control mb-2" type="number" name="price" placeholder="itemprice" required >  
-            <button class="btn btn-dark btn-sm" type="submit">Create Item</button>
+            <div class="mb-2 text-end">
+              <button type="submit" class="btn btn-success">Create</button>
+            </div>
           </form>
-  
+        </div>
       </div>
-
     </div>
-  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -82,8 +121,6 @@
         searchInput.focus();
       }
     });
-
-
   </script>
 
 
@@ -96,8 +133,8 @@
 
     function add(el) {
 
-        const list = document.getElementById('itemlist')
-        list.innerHTML += 
+      const list = document.getElementById('itemlist')
+      list.innerHTML +=
         `
         <div class="mb-1 d-flex">
                 <input type="text" class="form-control me-1"  name="items" value="${ el.innerHTML.trim()}" >
@@ -114,11 +151,9 @@
             </div>
         `
 
-       
-        
+
+
     }
-
-
 
 
 
@@ -127,11 +162,11 @@
       var filterValue = this.value.toLowerCase(); // Get the value entered by the user and convert it to lowercase for case-insensitive filtering
       var itemList = document.getElementById('items');
       var items = itemList.getElementsByTagName('h5');
-      
-      
+
+
       Array.from(items).forEach(function(item) {
         var text = item.textContent.toLowerCase();
-        
+
         if (text.indexOf(filterValue) > -1) {
           item.parentElement.style.display = 'flex'; // Show the item if the text matches the filter
         } else {
@@ -139,7 +174,7 @@
         }
       });
 
-      
+
     });
   </script>
 
