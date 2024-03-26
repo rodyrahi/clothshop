@@ -23,7 +23,7 @@ app.use(session({
 
 app.use((req, res, next) => {
   if (req.url !== "/employee/register" && req.url !== "/employee/login") {
-    if (req.session && req.session.employeeId) {
+    if (req.session && req.session.employee) {
       next();
     } else {
       res.render("partials/employee-login");
@@ -37,9 +37,14 @@ app.use((req, res, next) => {
 
 
 app.get('/', async(req, res) => {
-  if (req.session.employeeId) {
+  if (req.session.employee) {
     const items = shopdb.prepare(`select name , price from items`).all()
-    res.render('index' , {items});
+    const branch = shopdb
+      .prepare("select * from branches where id = ?")
+      .get(req.session.employee.branch);
+
+
+    res.render('index' , {items , branch});
   } else {
   
     res.redirect("/employee/login");
@@ -193,10 +198,9 @@ app.post("/employee/login", (req, res) => {
 
   if (employee && employee.password === password) {
     // Login successful, set session variable
-    req.session.employeeId = employee.id;
-
-    console.log(req.session.employeeId , employee.id);
-
+    req.session.employee = {"id":employee.id , "branch":employee.branch_id};
+    
+    
     res.redirect("/");
   } else {
     // Login failed
