@@ -31,9 +31,9 @@
               placeholder="search..."
             />
             <hr>
-            <div class="mb-2 p-0 ">
+            <div class="mb-2 p-0 overflow-auto" style="max-height: 50vh;">
               <% items.forEach(element => { %>
-              <div class=" p-1 my-1 itemhover " style="display: flex">
+              <div class="p-1 my-1 itemhover" style="display: flex">
                 <h5
                   type="button"
                   class="w-100 m-0"
@@ -43,13 +43,13 @@
                   <%= element.name %>
                 </h5>
 
-                <h6 class="ms-auto my-auto ">₹<%= element.price %></h6>
+                <h6 class="ms-auto my-auto">₹<%= element.price %></h6>
               </div>
-              <hr>
+              <hr />
 
               <% }) %>
-              
             </div>
+
           </div>
 
           <div class="row mt-auto">
