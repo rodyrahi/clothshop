@@ -71,6 +71,7 @@
                 placeholder="itemprice"
                 required
               />
+           
               <button class="btn btn-primary btn-sm" type="submit">
                 Create Item
               </button>
@@ -80,9 +81,10 @@
     
         <div class="col-9 text-center d-flex flex-column">
          <div class="text-start">
-          <h5><%= branch.name %></h5>
+          <h4 >Branch : <%= branch.name %></h4>
+          <hr>
          </div>
-          <h2>Create Cutomer</h2>
+          <h2 class="text-start" >Create Cutomer</h2>
 
           <form action="/createuser" method="post">
             <div class="mb-1">
@@ -99,17 +101,33 @@
                 name="phone"
                 placeholder="number"
               />
-
+              <input
+              class="form-control mb-2"
+              type="text"
+              name="address"
+              placeholder="address"
+              required
+              />
               <div id="itemlist" class=""></div>
             </div>
             <hr>
-            <div class="mb-3 ms-auto" style="max-width: 300px;">
+            <div class="mb-3 me-auto text-start" style="max-width: 500px;" >
+              <label class="mb-1" for="dt">Delivery Type</label>
+              <select class="form-select mb-3" id="dt">
+                <option value="True" selected>Branch</option>
+                <option value="False">Home</option>
+
+              </select>
+
+              
+            </div>
+            <div class="mb-3 me-auto text-start" style="max-width: 500px;">
               <label class="mb-1" for="Date">Date Of Delivery</label>
               <input id="Date" name="dob" class="form-control" type="date" required />
             </div>
 
-            <div class="mb-2 text-end">
-              <button type="submit" class="btn btn-success">Create</button>
+            <div class="mb-2 text-start">
+              <button type="submit" class="btn btn-lg btn-success">Create</button>
             </div>
           </form>
         </div>

@@ -4,6 +4,7 @@ const session = require("express-session");
 const bcrypt = require('bcrypt');
 
 const { shopdb} = require("./db.js");
+const e = require('express');
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
@@ -56,23 +57,51 @@ app.get('/', async(req, res) => {
 
 app.post('/createuser', (req, res) => {
   
-  const username = JSON.stringify(req.body.name);
-  const dob = req.body.dob
-  
-  
-  const { items, price , type , count } = req.body;
-  const combinedArray = {
-    "items":items,
-    "price":price,
-    "type":type,
-    "count":count
+  const username = req.body.name;
+  const dob = req.body.dob;
+  const phone = req.body.phone;
+
+  const { items, price, type, count } = req.body;
+
+  const combinedArray = [];
+
+  console.log(items);
+  if (Array.isArray(items)) {
+    items.forEach((element, index) => {
+      let item = {
+        name: element,
+        price: price[index],
+        type: type[index],
+        count: count[index],
+      };
+
+      combinedArray.push(item);
+    });
+  }else{
+    let item = {
+      name: items,
+      price: price,
+      type: type,
+      count: count,
+    };
+    combinedArray.push(item);
+  }
+
+  console.log(combinedArray);
+
+  const combinedString = JSON.stringify(combinedArray)
+
+  let totalPrice =0
+  if (combinedArray > 1) {
+    totalPrice = price.reduce((accumulator, currentPrice) => accumulator + parseFloat(currentPrice), 0);
 
   }
-  const combinedString = JSON.stringify(combinedArray)
-  const totalPrice = price.reduce((accumulator, currentPrice) => accumulator + parseFloat(currentPrice), 0);
+  else{
+    totalPrice = parseFloat(price)
+  }
 
 
-  shopdb.prepare(`INSERT INTO user (name, items, deliverydate, total) VALUES (?, ?, ?, ?)`).run(username, combinedString  , dob , totalPrice);  
+  shopdb.prepare(`INSERT INTO user (name, items, deliverydate, total ,phone , branch_id) VALUES (?, ?, ?, ?,? , ?)`).run(username, combinedString  , dob , totalPrice , phone , req.session.employee.branch);  
   res.redirect('/')
 });
   
@@ -92,6 +121,7 @@ app.get('/branches', (req, res) => {
 app.get('/createbranches', (req, res) => {
   res.render('partials/createbranches');
 });
+
 app.post('/createbranch', (req, res) => {
   
   const { name , address } = req.body
@@ -100,6 +130,7 @@ app.post('/createbranch', (req, res) => {
 
   res.redirect('/branches');
 });
+
 app.post("/branches/delete/:id", (req, res) => {
   const id  = req.params.id;
 
@@ -198,7 +229,7 @@ app.post("/employee/login", (req, res) => {
 
   if (employee && employee.password === password) {
     // Login successful, set session variable
-    req.session.employee = {"id":employee.id , "branch":employee.branch_id};
+    req.session.employee = {"id":employee.id , "branch":employee.branch_id , "admin":employee.admin};
     
     
     res.redirect("/");
@@ -207,6 +238,28 @@ app.post("/employee/login", (req, res) => {
     res.render("partials/employee-login", { error: "Invalid username or password" });
   }
 });
+
+// Create customer details route
+app.get("/customer-billing", (req, res) => {
+  const users = shopdb
+    .prepare("SELECT * FROM user WHERE branch_id = ?")
+    .all(req.session.employee.branch);
+  console.log(users);
+  res.render("partials/customer-billing" , {users});
+});
+
+
+
+
+app.get("/employee-salary", (req, res) => {
+  const salary = shopdb
+    .prepare("SELECT * FROM employees ")
+    .all();
+
+    console.log(salary);
+  res.render("partials/employee-salary", { employee: salary });
+});
+
 
 
 app.listen(4000, () => console.log(`http://localhost:${4000}`));

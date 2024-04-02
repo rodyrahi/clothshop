@@ -1,0 +1,60 @@
+<%- include('./header.ejs') %> <%- include('./navbar.ejs') %>
+
+<body>
+    
+  <div class="container">
+  <% users.forEach(element => { %>
+  
+  <div class="card m-2">
+    <div class="card-body">
+      <h3 class="card-title"><%= element.name %></h3>
+      <h6 class="card-subtitle mb-2 text-muted">Phone : <%= element.phone %></h6>
+      <h6 class="card-subtitle mb-2 text-muted">Address : <%= element.address %></h6>
+      <p class="card-text">
+        <strong>Date:</strong> <%= element.timestamp %>
+        <br>
+        <hr>
+        <strong>Items</strong>
+
+        <table class="table table-sm ">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <% JSON.parse(element.items).forEach(item => { %>
+            <tr>
+              <td><%= item.name %></td>
+              <td><%= item.price %></td>
+              <td><%= item.count %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <h4>Total: ₹<%= element.total %>.0</h4>
+        <% const deliveryDate = new Date(element.deliverydate); %>
+<% if (deliveryDate < Date.now()) { %>
+
+            <h4 class="card-subtitle mb-2 text-danger">Delivery Date: <%= element.deliverydate %></h4>
+
+        <% } else { %>
+
+            <h4 class="card-subtitle mb-2 text-success">Delivery Date: <%= element.deliverydate %></h4>
+
+
+        <% } %>
+
+  
+       
+
+      </p>
+    </div>
+  </div>
+
+  <% }) %>
+</div>
+
+</body>
