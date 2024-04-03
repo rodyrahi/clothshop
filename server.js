@@ -227,7 +227,7 @@ app.post("/employee/login", (req, res) => {
     .prepare("SELECT * FROM employees WHERE name = ?")
     .all(username);
 
-  if (employee && employee.password === password) {
+  if (employee.length>0 && employee.password === password) {
     // Login successful, set session variable
     req.session.employee = {"id":employee.id , "branch":employee.branch_id , "admin":employee.admin};
     
