@@ -1,0 +1,69 @@
+<%- include('./header.ejs') %> <%- include('./navbar.ejs') %>
+
+<div class="container mt-5">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        
+        <th>Debit</th>
+        <th>Credit</th>
+        <th>Salary</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+
+
+    <tbody>
+    
+      <% let emp_salary = employee.salary %>
+      <% salary.forEach(salary => { %>
+      <tr>
+        <td><%= salary.id %></td>
+        <td class="text-danger" id="debit">-<%= salary.debit %></td>
+        <td class="text-success" id="credit">+<%= salary.credit %></td>
+        
+        <td > <%= employee.salary %> </td>
+
+        <td > <%= emp_salary = emp_salary - salary.debit + salary.credit %> </td>
+      </tr>
+      <% }) %>
+    </tbody>
+
+
+    
+
+  </table>
+
+  <h2>Edit Salary</h2>
+  <form action="/edit-salary/<%= id %>" method="POST">
+    <div class="form-group">
+      <label for="debit">Debit</label>
+      <input type="number" class="form-control" id="debit" name="debit" min="0" value="0" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="credit">Credit</label>
+      <input type="number" class="form-control" id="credit" name="credit" min="0" value="0" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    
+  </form>
+
+  <h2>Update Salary</h2>
+  <form action="/update-salary/<%= id %>" method="POST">
+    <div class="form-group mb-3">
+      <label for="salary">Salary</label>
+      <input type="number" class="form-control" id="salary" name="salary" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+  
+  
+
+
+</div>

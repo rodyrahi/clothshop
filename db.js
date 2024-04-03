@@ -61,6 +61,22 @@ shopdb.exec(
   `
 );
 
+shopdb.exec(
+  `
+    CREATE TABLE IF NOT EXISTS salary (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      branch_id INTEGER REFERENCES branches(id),
+      employee_id INTEGER REFERENCES employees(id),
+      debit INTEGER,
+      credit INTEGER,
+      salary INTEGER,
+    
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `
+);
+
+
 
 
 

@@ -260,7 +260,45 @@ app.get("/employee-salary", (req, res) => {
   res.render("partials/employee-salary", { employee: salary });
 });
 
+app.get("/edit-salary/:id", (req, res) => {
+  const id = req.params.id;
+  const employee = shopdb.prepare("SELECT * FROM employees WHERE id = ?").all(id);
+  const salary = shopdb
+    .prepare("SELECT * FROM salary WHERE employee_id = ?")
+    .all(id);
 
+  console.log(employee[0]);
+  res.render("partials/edit-salary", {salary: salary,id, employee: employee[0]});
+
+
+
+});
+
+app.post("/edit-salary/:id", (req, res) => {
+  const id = req.params.id;
+  const { salary , debit , credit } = req.body;
+
+  shopdb
+    .prepare(
+      "INSERT INTO salary (employee_id, salary, debit, credit) VALUES (?, ?, ?, ?)"
+    )
+    .run(id, salary, debit, credit);
+
+  res.redirect(`/edit-salary/${id}`);
+
+});
+
+
+app.post("/update-salary/:id", (req, res) => {
+  const id = req.params.id;
+  const { salary } = req.body;
+
+  shopdb
+    .prepare("UPDATE employees SET salary = ? WHERE id = ?")
+    .run(salary, id);
+
+  res.redirect(`/edit-salary/${id}`);
+});
 
 app.listen(4000, () => console.log(`http://localhost:${4000}`));
 
