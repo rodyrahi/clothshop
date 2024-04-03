@@ -38,14 +38,15 @@ app.use((req, res, next) => {
 
 
 app.get('/', async(req, res) => {
+  console.log(req.session.employee);
   if (req.session.employee) {
     const items = shopdb.prepare(`select name , price from items`).all()
     const branch = shopdb
       .prepare("select * from branches where id = ?")
-      .get(req.session.employee.branch);
+      .all(req.session.employee.branch);
 
-
-    res.render('index' , {items , branch});
+    console.log(branch);
+    res.render('index' , {items , branch: branch[0]});
   } else {
   
     res.redirect("/employee/login");
@@ -228,9 +229,10 @@ app.post("/employee/login", (req, res) => {
     .all(username);
 
     console.log(employee[0].password , password);
-  if (employee.length>0 && employee[0].password === password) {
+  if (employee && employee[0].password === password) {
     // Login successful, set session variable
-    req.session.employee = {"id":employee.id , "branch":employee.branch_id , "admin":employee.admin};
+    req.session.employee = {"id":employee[0].id , "branch":employee[0].branch_id , "admin":employee[0].admin};
+    console.log(req.session.employee);
     
     
     res.redirect("/");
