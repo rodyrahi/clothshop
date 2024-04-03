@@ -225,7 +225,7 @@ app.post("/employee/login", (req, res) => {
   // Lookup employee by username
   const employee = shopdb
     .prepare("SELECT * FROM employees WHERE name = ?")
-    .get(username);
+    .all(username);
 
   if (employee && employee.password === password) {
     // Login successful, set session variable
