@@ -14,6 +14,7 @@ shopdb.exec(`
     total INTEGER,
     orderdate DATETIME DEFAULT CURRENT_TIMESTAMP,
     deliverydate DATE,
+    payment TEXT,
     branch_id INTEGER,
     onbranch BOOLEAN DEFAULT TRUE,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -29,6 +30,7 @@ shopdb.exec(
     price INTEGER,
     name TEXT,
     user TEXT,
+    service TEXT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 `

@@ -21,6 +21,7 @@
           <thead>
             <tr>
               <th>Name</th>
+              <th>Service</th>
               <th>Price</th>
               <th>Quantity</th>
             </tr>
@@ -29,8 +30,12 @@
             <% JSON.parse(element.items).forEach(item => { %>
             <tr>
               <td><%= item.name %></td>
+              <% let type = item.type %>
+              <td><%= type %></td>
               <td><%= item.price %></td>
               <td><%= item.count %></td>
+
+              
             </tr>
             <% }) %>
           </tbody>
@@ -49,15 +54,55 @@
         <% } %>
 
 
-         
-            <select class="form-select mb-3" aria-label="Default select example">
-            <option value="cash">Cash</option>
-            <option value="online">Online</option>
-            <option value="other">Other</option> 
-            </select>
 
-            <a href="/paymentdone/<%= element.id %>" class="btn btn-success">Payment Done </a>
-         
+            <% if ( element.payment ) { %>
+
+                <% if (element.payment == 'cash' || element.payment == 'online') { %>
+                  <h4 class="card-subtitle mb-2 text-success">Payment Done</h4>
+                  <h6 class="card-subtitle mb-2 text-primary">Payment Method: <%= element.payment %></h6>
+                <% } else { %>
+                    <h4 class="card-subtitle mb-2 text-warning">Full Payment Not Done</h4>
+                    <h6 class="card-subtitle mb-2 text-danger">Payment Required: ₹<%= element.payment %></h6>
+                  <% } %>
+                
+
+
+
+            <% } else { %>
+
+              <form action="/paymentdone/<%= element.id %>" method="post">
+                <select class="form-select mb-3" id="payment" onchange="changepayment()" name="paid" aria-label="Default select example">
+                  <option value="cash">Cash</option>
+                  <option value="online">Online</option>
+                  <option value="">Other</option> 
+                  </select>
+
+                  <input class="form-control mb-3 " type="hidden" name="paid" id="other">
+
+                  <script>
+                      if (document.getElementById("payment").value === "") {
+                        document.getElementById("payment").name = "";
+                        document.getElementById("other").type = "number";
+                      }
+                    function changepayment(){
+                      if (document.getElementById("payment").value === "") {
+                        document.getElementById("payment").name = "";
+                        document.getElementById("other").type = "number";
+                      }
+                      else{
+                        document.getElementById("other").type = "hidden";
+                        document.getElementById("payment").name = "paid";
+
+                      }
+
+                    }
+
+                  </script>
+
+                  <button type="submit" class="btn btn-success">Payment Done </button>
+              </form>
+
+            <% } %>
 
         </p>
       </div>

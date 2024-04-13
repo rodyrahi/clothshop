@@ -47,7 +47,7 @@ function isAdmin(req, res, next) {
 app.get('/', async(req, res) => {
   console.log(req.session.employee);
   if (req.session.employee) {
-    const items = shopdb.prepare(`select name , price from items`).all()
+    const items = shopdb.prepare(`select * from items`).all()
     const branch = shopdb
       .prepare("select * from branches where id = ?")
       .all(req.session.employee.branch);
@@ -69,8 +69,12 @@ app.post('/createuser', (req, res) => {
   const dob = req.body.dob;
   const phone = req.body.phone;
 
-  const { items, price, type, count } = req.body;
+  const { items, price, count } = req.body;
 
+  let type = req.body.type;
+  console.log(type);
+
+  
   const combinedArray = [];
 
   console.log(items);
@@ -79,7 +83,7 @@ app.post('/createuser', (req, res) => {
       let item = {
         name: element,
         price: price[index],
-        type: type[index],
+        type: type[index].split(",")[1],
         count: count[index],
       };
 
@@ -115,9 +119,19 @@ app.post('/createuser', (req, res) => {
   
 app.post('/createitem', (req, res) => {
   
-  const { name , price } = req.body
+  const { name  , press , steampress , rollpress , dryclean , rafoo , colour } = req.body
 
-  shopdb.prepare(`INSERT INTO items (name, price) VALUES (?, ?)`).run(name , price);  
+  const service = {
+    press: press,
+    steampress: steampress,
+    rollpress: rollpress,
+    dryclean: dryclean,
+    rafoo: rafoo,
+    colour: colour,
+  }
+
+
+  shopdb.prepare(`INSERT INTO items (name , service) VALUES (?, ?)`).run(name  , JSON.stringify(service));  
   res.redirect('/')
 });
   
@@ -322,6 +336,15 @@ app.get("/edit-user/:id", (req, res) => {
   }
 
   // edit user
+});
+
+
+
+app.post("/paymentdone/:id", (req, res) => {
+  const id = req.params.id;
+  const { paid } = req.body;
+  shopdb.prepare("UPDATE user SET payment = ?  WHERE id = ?").run( paid,id);
+  res.redirect("/customer-billing");
 });
 
 app.listen(4000, () => console.log(`http://localhost:${4000}`));

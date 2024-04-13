@@ -4,11 +4,10 @@
 <%- include('./partials/header.ejs') %>
 
 <style>
-  .itemhover:hover{
+  .itemhover:hover {
     background-color: aliceblue;
     color: black;
   }
-
 </style>
 
 
@@ -17,124 +16,83 @@
 
 
   <%- include('./partials/navbar.ejs') %>
-    <div class="container-fluid " >
+  <div class="container-fluid ">
 
- 
-      
-      <div class="row " style="height: 92vh">
-        <div class="col-3 bg-dark text-light d-flex flex-column p-3">
-          <div class="row">
-            <h4>Items</h4>
 
-            <input
-              class="form-control me-2"
-              type="text"
-              id="filteritems"
-              placeholder="search..."
-            />
-            <hr>
-            <div class="mb-2 p-0 overflow-auto" style="max-height: 50vh;">
-              <% items.forEach(element => { %>
-              <div class="p-1 my-1 itemhover" style="display: flex">
-                <h5
-                  type="button"
-                  class="w-100 m-0"
-                  onclick="add(this)"
-                  data-price="<%= element.price %>"
-                >
-                  <%= element.name %>
-                </h5>
 
-                <h6 class="ms-auto my-auto">₹<%= element.price %></h6>
-              </div>
-              <hr />
+    <div class="row " style="height: 92vh">
+      <div class="col-3 bg-dark text-light d-flex flex-column p-3">
+        <div class="row">
+          <h4>Items</h4>
 
-              <% }) %>
-            </div>
-
-          </div>
-
-          <div class="row mt-auto">
-            <hr />
-            <h4>Create Items</h4>
-
-            <form class="mb-3" method="post" action="/createitem">
-              <input
-                class="form-control mb-2"
-                type="text"
-                name="name"
-                placeholder="itemname"
-                required
-              />
-              <input
-                class="form-control mb-2"
-                type="number"
-                name="price"
-                placeholder="itemprice"
-                required
-              />
-           
-              <button class="btn btn-primary btn-sm" type="submit">
-                Create Item
-              </button>
-            </form>
-          </div>
-        </div>
-    
-        <div class="col-9 text-center d-flex flex-column">
-         <div class="text-start">
-          <h4 >Branch : <%= branch.name %></h4>
+          <input class="form-control me-2" type="text" id="filteritems" placeholder="search..." />
           <hr>
-         </div>
-          <h2 class="text-start" >Create Cutomer</h2>
+          <div class="mb-2 p-0 overflow-auto" style="max-height: 50vh;">
+            <% items.forEach(element => { %>
+            <div class="p-1 my-1 itemhover" style="display: flex">
+              <h5 type="button" class="w-100 m-0" onclick="add(this)" data-price="<%= element.price %>" data-service="<%=element.service%>" id="<%= element.id %>">
+                <%= element.name %>
 
-          <form action="/createuser" method="post">
-            <div class="mb-1">
-              <input
-                class="form-control mb-1"
-                type="text"
-                name="name"
-                placeholder="name"
-                required
-              />
-              <input
-                class="form-control mb-1"
-                type="text"
-                name="phone"
-                placeholder="number"
-              />
-              <input
-              class="form-control mb-2"
-              type="text"
-              name="address"
-              placeholder="address"
-              required
-              />
-              <div id="itemlist" class=""></div>
-            </div>
-            <hr>
-            <div class="mb-3 me-auto text-start" style="max-width: 500px;" >
-              <label class="mb-1" for="dt">Delivery Type</label>
-              <select class="form-select mb-3" id="dt">
-                <option value="True" selected>Branch</option>
-                <option value="False">Home</option>
+     
+                
+              </h5>
 
-              </select>
 
-              
             </div>
-            <div class="mb-3 me-auto text-start" style="max-width: 500px;">
-              <label class="mb-1" for="Date">Date Of Delivery</label>
-              <input id="Date" name="dob" class="form-control" type="date" required />
-            </div>
+            <hr />
 
-            <div class="mb-2 text-start">
-              <button type="submit" class="btn btn-lg btn-success">Create</button>
-            </div>
-          </form>
+            <% }) %>
+          </div>
+
+        </div>
+
+        <div class="row mt-auto">
+          <hr />
+          
+          <%- include('./partials/create-item.ejs') %>
         </div>
       </div>
+
+      <div class="col-9 text-center d-flex flex-column">
+        <div class="text-start">
+          <h4>Branch : <%= branch.name %></h4>
+          <hr>
+        </div>
+        <h2 class="text-start">Create Cutomer</h2>
+
+        <form action="/createuser" method="post">
+          <div class="mb-1">
+            <input class="form-control mb-1" type="text" name="name" placeholder="name" required />
+            <input class="form-control mb-1" type="text" name="phone" placeholder="number" />
+            <input class="form-control mb-2" type="text" name="address" placeholder="address" required />
+            <div id="itemlist" class=""></div>
+          </div>
+          <hr>
+          <div class="mb-3 me-auto text-start" style="max-width: 500px;">
+            <label class="mb-1" for="dt">Delivery Type</label>
+
+              
+
+            <select class="form-select mb-3" id="dt">
+              <option value="True" selected>Branch</option>
+              <option value="False">Home</option>
+
+            </select>
+
+
+          </div>
+          <div class="mb-3 me-auto text-start" style="max-width: 500px;">
+            <label class="mb-1" for="Date">Date Of Delivery</label>
+            <input id="Date" name="dob" class="form-control" type="date" required />
+          </div>
+
+          <div class="mb-2 text-start">
+            <button type="submit" class="btn btn-lg btn-success">Create</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -156,31 +114,57 @@
       parentDiv.remove();
     }
 
+    let elcount = 0
+
     function add(el) {
 
       const list = document.getElementById('itemlist')
-      list.innerHTML +=
+      const service = JSON.parse(el.getAttribute('data-service'))
+
+   
+
+      console.log(list.innerHTML)
+      var container = document.createElement("div");
+      
+      let content =
         `
         <div class="mb-1 d-flex">
-                <input type="text" class="form-control me-1"  name="items" value="${ el.innerHTML.trim()}" >
-                <select class="form-select me-1 mb-2" name="type" id="">
-                  <option value="rafu">rafu</option>
-                  <option value="press">press</option>
+                <input type="text" class="form-control me-1"  name="items"  value="${ el.innerHTML.trim()}" >
+
+                <select class="form-select me-1 mb-2" name="type" id="${elcount}service" onchange="changeservice(${elcount})"  >
+                 
+                  <option value="${service.press},press">Press</option>
+                  <option value="${service.steampress},steampress">Steam Press</option>
+                  <option value="${service.rollpress},rollpress">Roll Press</option>
+                  <option value="${service.dryclean},dryclean">Dry Clean</option>
+                  <option value="${service.rafoo},rafoo">Rafoo</option>
+                  <option value="${service.colour},colour">Colour</option>
                 </select>
 
-            
-                
-                <input type="number" class="form-control me-1"  name="price" value="${el.getAttribute('data-price')}" >
+                <input type="number" class="form-control me-1"  name="price" id="${elcount}price"  >
                 <input type="number" class="form-control me-1" name="count" value="1" min="1" >
                 <i class="fa-solid fa-circle-xmark text-danger m-auto" onclick="deleteInput(this)" style="font-size: 1.5rem;"></i>
             </div>
         `
+            
+        container.innerHTML = content;
+        list.appendChild(container)
 
 
+          document.getElementById(`${elcount}price`).value = service.press
+          elcount += 1
 
     }
 
+    function changeservice(el) {
 
+
+      const service = document.getElementById(`${el}service`).value.split(",")[0]
+
+      console.log(service);
+      document.getElementById(`${el}price`).value = service
+
+    }
 
 
     document.getElementById('filteritems').addEventListener('input', function() {

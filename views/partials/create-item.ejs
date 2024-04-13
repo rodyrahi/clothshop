@@ -1,0 +1,31 @@
+<div class="accordion " id="createItemAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button  " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Create Item
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse bg-dark " aria-labelledby="headingOne" data-bs-parent="#createItemAccordion">
+      <div class="accordion-body">
+
+        <form class="mb-3" method="post" action="/createitem">
+          <input class="form-control mb-2" type="text" name="name" placeholder="Item Name" required />
+
+
+          <input class="form-control mb-2" type="number" name="press" placeholder="Press" />
+          <input class="form-control mb-2" type="number" name="steampress" placeholder="Steam press" />
+          <input class="form-control mb-2" type="number" name="rollpress" placeholder="Roll Press" />
+          <input class="form-control mb-2" type="number" name="dryclean" placeholder="Dry Clean" />
+          <input class="form-control mb-2" type="number" name="rafoo" placeholder="Rafoo" />
+          <input class="form-control mb-2" type="number" name="colour" placeholder="Colour" />
+
+
+          <button class="btn btn-primary btn-sm" type="submit">
+            Create Item
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
