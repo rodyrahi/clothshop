@@ -8,9 +8,8 @@ const e = require('express');
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 
 
 
@@ -34,6 +33,14 @@ app.use((req, res, next) => {
   }
 });
 
+function isAdmin(req, res, next) {
+  if ( req.session.employee && req.session.employee.admin === 1) {
+    next();
+  } else {
+    res.redirect("/employee/login" , { error: "You are not authorized to view this page" });
+  }
+ 
+}
 
 
 
@@ -46,10 +53,10 @@ app.get('/', async(req, res) => {
       .all(req.session.employee.branch);
 
     console.log(branch);
-    res.render('index' , {items , branch: branch[0]});
+    res.render('index' , {items , branch: branch[0] , employee: req.session.employee });
   } else {
   
-    res.redirect("/employee/login");
+    res.redirect("/employee/login" );
   }
    
 });
@@ -114,9 +121,9 @@ app.post('/createitem', (req, res) => {
   res.redirect('/')
 });
   
-app.get('/branches', (req, res) => {
+app.get('/branches', isAdmin, (req, res) => {
     const branches = shopdb.prepare(`select * from branches`).all()
-    res.render('partials/branches' , {branches});
+    res.render('partials/branches' , {branches , employee: req.employee});
 });
 
 app.get('/createbranches', (req, res) => {
@@ -216,7 +223,7 @@ app.post("/employee/register", async (req, res) => {
 
 
 app.get("/employee/login", (req, res) => {
-  res.render("partials/employee-login");
+  res.render("partials/employee-login" , {employee: req.session.employee});
 });
 
 app.post("/employee/login", (req, res) => {
@@ -254,7 +261,7 @@ app.get("/customer-billing", (req, res) => {
 
 
 
-app.get("/employee-salary", (req, res) => {
+app.get("/employee-salary", isAdmin, (req, res) => {
   const salary = shopdb
     .prepare("SELECT * FROM employees ")
     .all();
@@ -301,6 +308,20 @@ app.post("/update-salary/:id", (req, res) => {
     .run(salary, id);
 
   res.redirect(`/edit-salary/${id}`);
+});
+
+
+
+
+
+
+
+app.get("/edit-user/:id", (req, res) => {
+  if (!isAdmin(req)) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  // edit user
 });
 
 app.listen(4000, () => console.log(`http://localhost:${4000}`));

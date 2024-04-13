@@ -15,13 +15,19 @@
             <a class="nav-link" href="/employee/login">Login</a>
           </li>
           <li class="nav-item">
+            <% if (locals.employee && locals.employee.admin ===1 ) { %>
             <a class="nav-link" href="/branches">Branches</a>
+            <% } %>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/customer-billing">billing</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/employee-salary">Employees</a>
+            <% if (locals.employee && locals.employee.admin ===1 ) { %>
+              <a class="nav-link" href="/employee-salary">Employees</a>
+
+            <% } %>
+
           </li>
 
 
