@@ -266,7 +266,7 @@ app.post("/employee/login", (req, res) => {
 // Create customer details route
 app.get("/customer-billing", (req, res) => {
   const users = shopdb
-    .prepare("SELECT * FROM user WHERE branch_id = ?")
+    .prepare("SELECT * FROM user WHERE branch_id = ? ORDER BY timestamp DESC")
     .all(req.session.employee.branch);
   console.log(users);
   res.render("partials/customer-billing" , {users});

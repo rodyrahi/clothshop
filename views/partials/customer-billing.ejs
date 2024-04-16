@@ -3,6 +3,60 @@
 <body>
 
   <div class="container">
+
+    <div class="m-2">
+      <button class="btn btn-primary" onclick="printTable()">Print Data</button>
+
+    </div>
+
+    <table class="table d-none" id="print-table">
+      <thead>
+        <tr>
+          <th>Bill NO.</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>payment</th>
+          <th>date of dilvery</th>
+          <th>date of order</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.phone %></td>
+          <td><%= user.payment %></td>
+          <td><%= user.deliverydate %></td>
+          <td><%= user.timestamp %></td>
+        </tr>
+        <% }) %>
+
+      </tbody>
+    </table>
+
+    <script>
+function printTable()
+{
+   var divToPrint=document.getElementById("print-table");
+   newWin= window.open("");
+   newWin.document.write(divToPrint.outerHTML);
+   newWin.print();
+   newWin.close();
+}
+    </script>
+
+
+    
+
+
+
+
+
+
+
+
     <% users.forEach(element => { %>
 
     <div class="card m-2">
