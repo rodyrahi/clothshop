@@ -137,7 +137,7 @@ app.post('/createitem', (req, res) => {
   
 app.get('/branches', isAdmin, (req, res) => {
     const branches = shopdb.prepare(`select * from branches`).all()
-    res.render('partials/branches' , {branches , employee: req.employee});
+    res.render('partials/branches' , {branches , employee: req.session.employee});
 });
 
 app.get('/createbranches', (req, res) => {
@@ -268,8 +268,15 @@ app.get("/customer-billing", (req, res) => {
   const users = shopdb
     .prepare("SELECT * FROM user WHERE branch_id = ? ORDER BY timestamp DESC")
     .all(req.session.employee.branch);
-  console.log(users);
-  res.render("partials/customer-billing" , {users});
+  
+  const allusers = shopdb
+  .prepare("SELECT * FROM user ORDER BY timestamp DESC")
+  .all();
+    
+  const admin = req.session.employee.admin === 1 ? users : allusers;
+  
+    console.log(users);
+  res.render("partials/customer-billing" , {users:  admin  , employee: req.session.employee});
 });
 
 
@@ -281,7 +288,7 @@ app.get("/employee-salary", isAdmin, (req, res) => {
     .all();
 
     console.log(salary);
-  res.render("partials/employee-salary", { employee: salary });
+  res.render("partials/employee-salary", { employeesalary: salary , employee: req.session.employee });
 });
 
 app.get("/edit-salary/:id", (req, res) => {
